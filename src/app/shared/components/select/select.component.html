@@ -1,0 +1,6 @@
+<label for="" class="my-1">Categories : </label>
+<select class="form-control" *ngIf="categories.length !=0" (change)="getSelectedCategory($event)">
+    <option value="all">All</option>
+
+    <option [value]="category" *ngFor="let category of categories">{{category}}</option>
+</select>
