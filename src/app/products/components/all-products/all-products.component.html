@@ -1,11 +1,10 @@
 <div class="box mt-5">
-
     <div class="my-2 w-25">
      <app-select [categories]="categories" (selectedCategroy)="selectedCategory($event)"></app-select>
     </div>
     <div class="row">
         <div class="col-md-3  col-sm-12" *ngFor="let product of products!">
-          <app-product [product]="product" (click)="getDetails(product)"></app-product>
+          <app-product [product]="product" (click)="getDetails(product)" (item)="getCartItem($event)"> </app-product>
         </div>
     </div>
     <ngx-loading [show]="loading" ></ngx-loading>
