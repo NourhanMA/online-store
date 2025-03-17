@@ -10,7 +10,8 @@ on:
 
 jobs:
   build:
-    if: github.event.base_ref == 'refs/heads/new-feature'
+    if: github.ref == 'refs/heads/new-feature'
+
     runs-on: ubuntu-latest
 
     steps:
