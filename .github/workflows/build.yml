@@ -4,12 +4,14 @@ on:
   push:
     tags:
       - "prod-*"
-  
+    branches:
+      - new-feature
 
 jobs:
   build:
     runs-on: ubuntu-latest
     # if: github.ref_name == 'new-feature'
+    # if: contains(github.ref_name , 'prod')
 
     steps:
       - name: Print GitHub Context Variables
@@ -21,14 +23,41 @@ jobs:
           echo "github.head_ref: $GITHUB_HEAD_REF"
           echo "github.event.base_ref: $GITHUB_EVENT_BASE_REF"
 
-      
-
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Fetch all history to check the branch
 
+      - name: get branch name
+        run: |
+          branch=$(git branch --contains tags/${{ github.ref_name }})
+          contains=$?
+
+          echo "$branch"
+          echo "$contains "
+                   
+
       
+      - name: Get Branch
+        run: |
+          branch1=$(git branch -r --contains ${{ github.ref }} --format "%(refname:lstrip=3)")
+          echo "BRANCH=$branch1" >> $GITHUB_ENV
+
+      - run: |
+          echo $branch1
+
+
+      - name: Print GitHub Context Variables
+        run: |
+          echo "github.ref: $GITHUB_REF"
+          echo "github.ref_name: $GITHUB_REF_NAME"
+          echo "github.base_ref: $GITHUB_BASE_REF"
+          echo "github.event_name: $GITHUB_EVENT_NAME"
+          echo "github.head_ref: $GITHUB_HEAD_REF"
+          echo "github.event.base_ref: $GITHUB_EVENT_BASE_REF"
+
+      - name: get status
+        run: git status
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
