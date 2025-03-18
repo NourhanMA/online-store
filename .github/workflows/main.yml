@@ -62,7 +62,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: angular-dist
-          path: dist/carly-revamp-spa/
+          path: dist/
 
   deploy-dev:
     needs: build
