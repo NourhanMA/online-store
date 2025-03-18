@@ -47,7 +47,7 @@ jobs:
           else
             echo "BUILD_ENV=development" >> $GITHUB_ENV
           fi
-          echo "Selected Build Environment: $BUILD_ENV"
+          echo "Selected Build Environment: ${{ env.BUILD_ENV }}"
 
       - name: Print GitHub Context Variables
         run: |
