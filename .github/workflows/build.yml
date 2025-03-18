@@ -25,8 +25,11 @@ jobs:
 
       - name: get branch name
         run: |
-          branch=git branch --contains tags/${{ github.ref_name }}
+          branch=$(git branch --contains tags/${{ github.ref_name }})
+
           echo "$branch"
+
+  
 
       - name: Checkout code
         uses: actions/checkout@v4
