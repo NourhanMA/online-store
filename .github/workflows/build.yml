@@ -35,7 +35,6 @@ jobs:
             exit 1
           else
             echo "✅ Tag belongs to branch: $branch"
-            echo "BRANCH_NAME=$branch" >> $GITHUB_ENV
           fi
 
       - name: Setup Node.js
