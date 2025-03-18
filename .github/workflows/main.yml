@@ -18,7 +18,7 @@ jobs:
 
       - name: Check branch contains tag
         run: |
-          branch=$(git branch -a --contains tags/${{ github.ref_name }} | grep feat/car-randomization)
+          branch=$(git branch -a --contains tags/${{ github.ref_name }} | grep main)
           contains=$?
 
           echo "$contains "
