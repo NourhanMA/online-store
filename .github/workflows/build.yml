@@ -1,0 +1,55 @@
+name: Angular CI/CD
+
+on:
+  push:
+    tags:
+      - "prod-*"
+  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # if: github.ref_name == 'new-feature'
+
+    steps:
+      - name: Print GitHub Context Variables
+        run: |
+          echo "github.ref: $GITHUB_REF"
+          echo "github.ref_name: $GITHUB_REF_NAME"
+          echo "github.base_ref: $GITHUB_BASE_REF"
+          echo "github.event_name: $GITHUB_EVENT_NAME"
+          echo "github.head_ref: $GITHUB_HEAD_REF"
+          echo "github.event.base_ref: $GITHUB_EVENT_BASE_REF"
+
+      
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history to check the branch
+
+      
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm i --legacy-peer-deps
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: npm-cache-${{ hashFiles('package-lock.json') }}
+
+      - name: Build Angular app
+        run: npm run build -- --configuration=development
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: angular-dist
+          path: dist/
