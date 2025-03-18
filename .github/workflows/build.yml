@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.ref_name == 'refs/heads/new-feature'
+    if: github.ref_name == 'new-feature'
 
     steps:
       - name: Print GitHub Context Variables
