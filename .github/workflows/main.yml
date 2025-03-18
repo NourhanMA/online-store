@@ -13,11 +13,25 @@ env:
 jobs:
   build:
     # if: github.event.base_ref == 'refs/heads/new-feature'
-    if: startsWith(github.ref, 'refs/tags/v') && github.ref_name == 'new-feature'
+
+
+  
+
+    # if: startsWith(github.ref, 'refs/tags/v') && github.ref_name == 'new-feature'
 
     runs-on: ubuntu-latest
+    
 
     steps:
+
+      - name: Print GitHub Context Variables
+        run: |
+          echo "github.ref: $GITHUB_REF"
+          echo "github.ref_name: $GITHUB_REF_NAME"
+          echo "github.base_ref: $GITHUB_BASE_REF"
+          echo "github.event_name: $GITHUB_EVENT_NAME"
+          echo "github.head_ref: $GITHUB_HEAD_REF"
+
       - name: Checkout code
         uses: actions/checkout@v3
 
