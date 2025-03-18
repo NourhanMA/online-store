@@ -27,11 +27,11 @@ jobs:
 
       - name: get branch name
         run: |
+          echo "hereee ... "
           branch=$(git branch  -a --contains tags/${{ github.ref_name }} | grep main)
           contains=$?
           echo "$contains "
           echo "$branch"
-          echo "BRANCH=$contains" >> $GITHUB_ENV
           
       - name: check branch
         run: |
