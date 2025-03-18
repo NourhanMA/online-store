@@ -5,7 +5,7 @@ on:
     tags:
       - "prod-*"
     branches:
-      - feat/car-randomization
+      - new-feature
 
 jobs:
   build:
