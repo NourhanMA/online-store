@@ -44,7 +44,7 @@ jobs:
           echo "BRANCH=$branch1" >> $GITHUB_ENV
 
       - run: |
-          echo ${{ env.BRANCH }}  
+          echo $branch1
 
 
       - name: Print GitHub Context Variables
