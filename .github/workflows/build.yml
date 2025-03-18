@@ -33,7 +33,10 @@ jobs:
           branch=$(git branch --contains tags/${{ github.ref_name }})
 
           echo "$branch"
-          
+          contains=$?
+          echo "$contains "
+         
+
       - name: Print GitHub Context Variables
         run: |
           echo "github.ref: $GITHUB_REF"
