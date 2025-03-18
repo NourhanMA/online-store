@@ -41,7 +41,6 @@ jobs:
       - name: Get Branch
         run: |
           branch1=$(git branch -r --contains ${{ github.ref }} --format "%(refname:lstrip=3)")
-          echo ::set-env name=BRANCH::$branch1
           echo "BRANCH=$branch1" >> $GITHUB_ENV
 
       - run: |
