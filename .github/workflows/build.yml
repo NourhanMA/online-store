@@ -31,9 +31,9 @@ jobs:
       - name: get branch name
         run: |
           branch=$(git branch --contains tags/${{ github.ref_name }})
+          contains=$?
 
           echo "$branch"
-          contains=$?
           echo "$contains "
          
 
