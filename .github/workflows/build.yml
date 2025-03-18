@@ -32,11 +32,13 @@ jobs:
           echo "$contains "
           echo "$branch"
           echo "BRANCH=$contains" >> $GITHUB_ENV
-                
-          if [[ $contains != 0 ]]; then 
+          
+      - name: check branch
+        run: |
+           if [[ $contains != 0 ]]; then 
             echo "Not main branch"
             exit -1
-          fi
+            fi
 
       - name: Print GitHub Context Variables
         run: |
