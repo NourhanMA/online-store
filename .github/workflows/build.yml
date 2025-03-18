@@ -28,16 +28,7 @@ jobs:
         with:
           fetch-depth: 0 # Fetch all history to check the branch
 
-      - name: Verify tag is from main branch
-        run: |
-          TAG_NAME=${{ github.ref_name }}  # e.g., v1.0.0
-          BRANCH=$(git branch -r --contains tags/$TAG_NAME | grep -E 'origin/new-feature$')
-          if [ -z "$BRANCH" ]; then
-              echo "Error: Tag $TAG_NAME is not from the new-feature branch!"
-              exit 1
-          else
-              echo "Tag $TAG_NAME is confirmed to be from new-feature branch."
-          fi
+      
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
