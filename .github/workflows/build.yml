@@ -22,6 +22,19 @@ jobs:
           echo "github.head_ref: $GITHUB_HEAD_REF"
           echo "github.event.base_ref: $GITHUB_EVENT_BASE_REF"
 
+      - name: Find the branch where the tag was created
+        id: find_branch
+        run: |
+          BRANCH_NAME=$(git branch -r --contains ${{ github.ref }} | grep -v HEAD | awk -F'/' '{print $2}' | head -n 1)
+          echo "Branch name: $BRANCH_NAME"
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+
+      - name: Print Debug Info
+        run: |
+            echo "GitHub ref: $GITHUB_REF"
+            echo "GitHub ref name: $GITHUB_REF_NAME"
+            echo "Detected branch: $BRANCH_NAME"
+
       - name: Checkout code
         uses: actions/checkout@v4
 
