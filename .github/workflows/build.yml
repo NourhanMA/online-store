@@ -5,7 +5,7 @@ on:
     tags:
       - "prod-*"
     branches:
-      - new-features
+      - new-feature
 
 jobs:
   build:
