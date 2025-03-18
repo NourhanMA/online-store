@@ -34,6 +34,7 @@ jobs:
           echo "BRANCH=$contains" >> $GITHUB_ENV
                 
           if [[ $contains != 0 ]]; then 
+            echo "Not main branch"
             exit -1
           fi
 
