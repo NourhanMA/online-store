@@ -23,19 +23,17 @@ jobs:
           echo "github.head_ref: $GITHUB_HEAD_REF"
           echo "github.event.base_ref: $GITHUB_EVENT_BASE_REF"
 
-      - name: get branch name
-        run: |
-          branch=$(git branch --contains tags/${{ github.ref_name }})
-
-          echo "$branch"
-
-  
-
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Fetch all history to check the branch
 
+      - name: get branch name
+        run: |
+          branch=$(git branch --contains tags/${{ github.ref_name }})
+
+          echo "$branch"
+          
       - name: Print GitHub Context Variables
         run: |
           echo "github.ref: $GITHUB_REF"
@@ -44,9 +42,9 @@ jobs:
           echo "github.event_name: $GITHUB_EVENT_NAME"
           echo "github.head_ref: $GITHUB_HEAD_REF"
           echo "github.event.base_ref: $GITHUB_EVENT_BASE_REF"
-     
+
       - name: get status
-        run: git status 
+        run: git status
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
