@@ -4,12 +4,11 @@ on:
   push:
     tags:
       - "prod-*"
+      - "dev-*"
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    # if: github.ref_name == 'new-feature'
-    # if: contains(github.ref_name , 'prod')
 
     steps:
       - name: Print GitHub Context Variables
@@ -39,6 +38,16 @@ jobs:
             exit -1
             fi
 
+      - name: Determine Build Configuration from Tag
+        id: set_build_env
+        run: |
+          TAG_NAME="${{ github.ref_name }}"  # Get the tag name
+          if [[ "$TAG_NAME" == prod-* ]]; then
+            echo "BUILD_ENV=production" >> $GITHUB_ENV
+          else
+            echo "BUILD_ENV=development" >> $GITHUB_ENV
+          fi
+          echo "Selected Build Environment: $BUILD_ENV"
 
       - name: Print GitHub Context Variables
         run: |
@@ -68,7 +77,7 @@ jobs:
           key: npm-cache-${{ hashFiles('package-lock.json') }}
 
       - name: Build Angular app
-        run: npm run build -- --configuration=development
+        run: npm run build -- --configuration=${{ env.BUILD_ENV }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
