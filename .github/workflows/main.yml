@@ -3,13 +3,20 @@ name: Angular CI/CD
 on:
   push:
     tags:
-      - "prod-*"
-      - "dev-*"
+      - 'prod-*'
+      - 'dev-*'
+
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'Message'
+        required: false
+        default: 'No message' 
+
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -21,18 +28,18 @@ jobs:
           branch=$(git branch  -a --contains tags/${{ github.ref_name }} | grep main)
           contains=$?
 
-          echo "$contains "
+          echo "$contains"
           echo "$branch"
           echo "BRANCH=$contains" >> $GITHUB_ENV
-                
-          if [[ $contains != 0 ]]; then 
+
+          if [[ $contains != 0 ]]; then
             echo "Not Main Branch"
             exit -1
           fi
 
       - name: Determine build configuration from tag
         run: |
-          TAG_NAME="${{ github.ref_name }}" 
+          TAG_NAME="${{ github.ref_name }}"
           if [[ "$TAG_NAME" == prod-* ]]; then
             echo "BUILD_ENV=production" >> $GITHUB_ENV
           else
@@ -62,11 +69,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: angular-dist
-          path: dist/
+          path: dist/carly-revamp-spa/
 
   deploy-dev:
     needs: build
-    if: startsWith(github.ref_name, 'dev-') 
+    if: startsWith(github.ref_name, 'dev-')
     runs-on: ubuntu-latest
 
     steps:
@@ -74,17 +81,21 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: angular-dist
-          path: dist/
+          path: dist/carly-revamp-spa/
 
-      - name: Deploy to Development Server
-        run: |
-          echo "🚀 Deploying to Development Server"
-          # Example deployment command (replace with actual command)
-          # scp -r dist/* user@dev-server:/var/www/html
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Deploy to S3
+        run: aws s3 sync dist/carly-revamp-spa/browser/ s3://carly-revamp-dev --delete
 
   deploy-prod:
     needs: build
-    if: startsWith(github.ref_name, 'prod-') # Run only for prod tags
+    if: startsWith(github.ref_name, 'prod-')
     runs-on: ubuntu-latest
 
     steps:
@@ -96,6 +107,4 @@ jobs:
 
       - name: Deploy to Production Server
         run: |
-          echo "🚀 Deploying to Production Server"
-          # Example deployment command (replace with actual command)
-          # scp -r dist/* user@prod-server:/var/www/html
+          echo "Deploying to production server"
